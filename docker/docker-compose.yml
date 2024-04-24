@@ -1,0 +1,76 @@
+#
+# Will start all docker constructions with MySQL
+#
+# Java img construction is controlled by Dockerfile
+# Spring boot options are given at line ~87
+#
+# Password and network ports are handled in .env file
+#
+version: "3.9"
+name: projektor
+services:
+  # https://hub.docker.com/_/mysql
+  mysql_projektor:
+    image: mysql:8.2.0
+    container_name: mysql_projektor
+    hostname: mysql_projektor
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$DB_DATABASE
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_USER_PASSWORD
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+    # Use ports if you want to connect to Data base from outside the container
+    ports:
+      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    # No access from OUTSIDE the containers, use expose
+    # expose:
+    #  - $DB_DOCKER_PORT
+    
+    # Give access from OUTSIDE to the containers
+    # Use this instead if you want to connect to Data base
+    # ports:
+    #  - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    # We have two volumes
+    # one file=bind: the dump of the db. This should prevail docker to
+    #                mount a file 'as' a directory
+    # one volume=volume: where to keep datas. It is a directory
+    volumes:
+      - type: bind
+        source: ./projektor-v02.sql
+        target: /docker-entrypoint-initdb.d/projektor-v02.sql
+        read_only: true
+      - type: volume
+        source: vol_mysql_db_sl
+        target: /var/lib/mysql
+
+  # https://hub.docker.com/_/phpmyadmin
+  phpmyadmin_projektor:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_projektor
+    hostname: phpmyadmin_projektor
+    depends_on:
+      - mysql_projektor
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $PMA_LOCAL_PORT:$PMA_DOCKER_PORT
+    environment:
+      - PMA_HOST=mysql_projektor
+      - PMA_PORT=$DB_DOCKER_PORT
+      - PMA_USER=root
+      - PMA_PASSWORD=$DB_ROOT_PASSWORD
+      - PMA_ARBITRARY=1
+
+
+volumes:
+  vol_mysql_db_sl:
+
+
+#
+# Run all  : docker-compose up --build
+# Stop all : docker-compose down
+# Stop all and delte all img : docker-compose down --rmi all
+#
