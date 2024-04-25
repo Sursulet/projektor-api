@@ -27,6 +27,7 @@ class UserRepositoryTest {
         user.setFirstName("testuser");
         user.setLastName("toto");
         user.setEmail("testuser@example.com");
+        user.setPassword("12345");
         user.setRole(Role.CLIENT.toString().toLowerCase());
         var savedUser = userRepository.save(user);
 

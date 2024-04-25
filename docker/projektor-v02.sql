@@ -316,6 +316,50 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
+
+-- |||||||  generating the seed ||||||||| --
+
+-- Inserting Pokémon (users) data
+INSERT INTO projektor.user (password,first_name, last_name, email, phone, role) VALUES
+                                                                           ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Pikachu', '', 'pikachu@example.com', '', 'client'),
+                                                                           ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Bulbasaur', '', 'bulbasaur@example.com', '', 'client'),
+                                                                           ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Charmander', '', 'charmander@example.com', '', 'client'),
+                                                                           ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Squirtle', '', 'squirtle@example.com', '', 'client'),
+                                                                           ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Jigglypuff', '', 'jigglypuff@example.com', '', 'client');
+
+-- Optional: If you need to assign provider roles to some users
+-- You can execute an UPDATE query to modify the appropriate role
+
+-- Example: Update Bulbasaur's role to provider
+-- UPDATE projektor.user SET role = 'provider' WHERE first_name = 'Bulbasaur';
+
+-- If you need to enter additional information for each user, you can expand the inserted data
+
+
+
+-- Inserting seed data for the user table
+INSERT INTO projektor.user (password, last_name, first_name, email, phone, role, postal_code, address, geo_loc, usercol)
+VALUES
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Ash', 'Ketchum', 'ash@example.com', '123456789', 'client', '12345', 'Pallet Town', '12.345,67.890', 'usercol1'),
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Brock', 'Rock', 'brock@example.com', '987654321', 'provider', '54321', 'Pewter City', '98.765,43.210', 'usercol2'),
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Misty', 'Waterflower', 'misty@example.com', '111222333', 'client_and_provider', '67890', 'Cerulean City', '67.890,12.345', 'usercol3');
+
+-- Inserting seed data for the account table
+INSERT INTO projektor.account (name, iban, bic, user_id)
+VALUES
+    ('Account 1', 'DE89370400440532013000', 'COBADEFFXXX', 1),
+    ('Account 2', 'FR1420041010050500013M02606', 'BNPAFRPPXXX', 2),
+    ('Account 3', 'GB33BUKB20201555555555', 'BARCGB22XXX', 3);
+
+-- Inserting seed data for other tables follows a similar pattern
+
+
+
+
+
+-- FIN DU SCRIPT --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
