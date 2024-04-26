@@ -2,6 +2,7 @@ package com.projektor.service;
 
 
 import com.projektor.entity.Project;
+import com.projektor.entity.User;
 import com.projektor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+    private Object userRepository;
 
     // Method to save a project
     public Project saveProject(Project project) {

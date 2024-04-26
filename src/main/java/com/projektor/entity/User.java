@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User  {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +38,6 @@ public class User {
     @Column(name = "geo_loc", length = 60)
     private String geoLoc;
 
-    @Column(name = "usercol", length = 45)
-    private String usercol;
 
     public Integer getId() {
         return id;
@@ -113,13 +111,6 @@ public class User {
         this.geoLoc = geoLoc;
     }
 
-    public String getUsercol() {
-        return usercol;
-    }
-
-    public void setUsercol(String usercol) {
-        this.usercol = usercol;
-    }
 
     public String getPassword() {
         return password;

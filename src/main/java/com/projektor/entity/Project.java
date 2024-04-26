@@ -8,10 +8,12 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name = "project")
 public class Project {
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,4 +119,5 @@ public class Project {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
-}
+
+ }

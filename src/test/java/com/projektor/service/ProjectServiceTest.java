@@ -9,14 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -55,6 +54,8 @@ public class ProjectServiceTest {
         // Other assertions for other attributes...
     }
 
+
+
     // Test to update a project
     @Test
     public void testUpdateProject() {
@@ -70,11 +71,52 @@ public class ProjectServiceTest {
         Project updatedProject = projectService.saveProject(existingProject);
 
         // Verify that the project was updated successfully
-        assertThat(updatedProject).isNotNull();
+        assertNotNull(updatedProject);
         assertThat(updatedProject.getId()).isEqualTo(existingProjectId);
         assertThat(updatedProject.getDescription()).isEqualTo("New project description");
         // Other assertions for other attributes...
 
+    }
+
+    // test to retrieve all projects
+    @Test
+    public void testGetAllProjects() {
+        // Act
+        List<Project> allProjects = projectService.getAllProjects();
+
+        /* Assert */
+        assertNotNull(allProjects);
+        assertEquals(7, allProjects.size()); // Assuming there are 7 projects in the seed data
+
+        // You can add more assertions to verify the contents of the list
+    }
+
+
+
+    //test to save a project
+    @Test
+    public void testSaveProject() {
+        // testing datas
+        User author = userRepository.findById(1).get();
+        Project project = new Project();
+        project.setTitle("Titre du projet");
+        project.setDeadline(LocalDate.now());
+        project.setPriority(3);
+        project.setStatus("in progress");
+        project.setDescription("Description du projet");
+        project.setAuthor(author);
+
+        // calling the method to test
+        Project savedProject = projectService.saveProject(project);
+
+        // verifying if writing is succesful
+        assertEquals("Titre du projet", savedProject.getTitle());
+        assertEquals("Description du projet", savedProject.getDescription());
+        assertEquals(author.getId(), savedProject.getAuthor().getId());
+    }
+
+    private static User getProjectRepository() {
+        return null;
     }
 
 }
