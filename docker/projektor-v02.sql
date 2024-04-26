@@ -102,6 +102,7 @@ DROP TABLE IF EXISTS `projektor`.`project` ;
 
 CREATE TABLE IF NOT EXISTS `projektor`.`project` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
   `description` TEXT NULL DEFAULT NULL,
   `deadline` DATE NOT NULL,
   `priority` INT NOT NULL,
@@ -353,6 +354,96 @@ VALUES
 
 -- Inserting seed data for other tables follows a similar pattern
 
+-- Inserting Users with Random Roles
+INSERT INTO projektor.user (password, first_name, last_name, email, phone, role)
+VALUES
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Tony', 'Stark', 'tony@example.com', '123456789', 'client'),
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Stephen', 'Strange', 'stephen@example.com', '987654321', 'provider'),
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Reed', 'Richards', 'reed@example.com', '111222333', 'client_and_provider');
+    -- Add 3 more users with random Marvel Universe names and roles
+
+-- Inserting Reviews
+    INSERT INTO projektor.review (rating, comment, date_added, client, provider)
+VALUES
+    (5, 'Excellent service! Would highly recommend.', NOW(), 1, 2),
+    (4, 'Great job, but could be improved.', NOW(), 3, 4);
+
+-- Inserting Projects
+    INSERT INTO projektor.project (title, description, deadline, priority, status, author, start_date, end_date)
+VALUES
+    ('Repairing Tony Stark\'s house', 'Repairing Tony Stark\'s house', '2024-05-01', 1, 'in progress', 1, NOW(), NULL),
+    ('Renovating Dr. Strange\'s manor', 'Renovating Dr. Strange\'s manor', '2024-05-15', 2, 'in progress', 2, NOW(), NULL);
+    -- Add more projects as needed
+
+-- Inserting Providers
+    INSERT INTO projektor.user (password, first_name, last_name, email, phone, role)
+VALUES
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Peter', 'Parker', 'peter@example.com', '333444555', 'provider'),
+    ('$2a$10$dUGekC7WsVaa2QmYegSNp.X2Da.Jgl6L4nATaIaEF2qRMdl.qox2.', 'Bruce', 'Banner', 'bruce@example.com', '666777888', 'provider');
+    -- Add more providers as needed
+
+    -- Inserting projects
+    INSERT INTO projektor.project (id, title, description, deadline, priority, status, author, start_date, end_date)
+VALUES
+    (NULL, 'Repairing Tony Stark\'s house', 'Repairing damages caused by recent attacks.', '2024-05-01', 1, 'in progress', 1, NOW(), NULL),
+    (NULL, 'Renovating Dr. Strange\'s manor', 'Restoration and magical enhancements.', '2024-05-15', 2, 'in progress', 2, NOW(), NULL),
+    (NULL, 'Stark Tower Energy Upgrade', 'Implementing clean energy solutions.', '2024-05-20', 3, 'in progress', 1, NOW(), NULL),
+    (NULL, 'Avengers Headquarters Expansion', 'Adding new facilities for training and operations.', '2024-06-10', 4, 'in progress', 1, NOW(), NULL),
+    (NULL, 'Baxter Building Renovation', 'Modernizing infrastructure and research labs.', '2024-06-30', 5, 'in progress', 3, NOW(), NULL);
+
+-- Populating the Quote Table with Sample Data
+INSERT INTO projektor.quote (description, price, supposed_start_date, supposed_end_date, provider, task)
+VALUES
+    ('Replacement of damaged pipes', 1500.00, '2024-04-25 08:00:00', '2024-05-01 18:00:00', 2, 1), -- Quote provided by Brock (user_id: 2) for Task 1
+    ('Interior painting of living room', 800.00, '2024-04-30 09:00:00', '2024-05-07 17:00:00', 3, 2), -- Quote provided by Misty (user_id: 3) for Task 2
+    ('Roof repair and maintenance', 2500.00, '2024-05-03 08:00:00', '2024-05-10 18:00:00', 4, 3), -- Quote provided by Peter Parker (user_id: 4) for Task 3
+    ('Garden landscaping and design', 1200.00, '2024-05-05 10:00:00', '2024-05-12 16:00:00', 5, 4), -- Quote provided by Jigglypuff (user_id: 5) for Task 4
+    ('Electrical wiring installation', 1800.00, '2024-05-08 08:00:00', '2024-05-15 18:00:00', 6, 5); -- Quote provided by Peter Parker (user_id: 6) for Task 5
+
+
+-- Assigning Jobs to Providers
+INSERT INTO projektor.provider_has_jobs (user_id, jobs_id)
+VALUES
+    (6, 1), -- Peter Parker for Plumbing
+    (7, 2), -- Bruce Banner for Masonry
+    (8, 3); -- [Insert User ID] for [Insert Job ID]
+
+-- Populating the Message Table with Sample Data
+INSERT INTO projektor.message (text, date_added, id_task, author)
+VALUES
+    ('Please confirm the materials required for the project.', NOW(), 1, 1), -- Sent by Pikachu (user_id: 1) for Task 1
+    ('Sure, I will provide the list by tomorrow.', NOW(), 1, 2), -- Sent by Bulbasaur (user_id: 2) for Task 1
+    ('We need additional assistance for plumbing work.', NOW(), 2, 3), -- Sent by Ash (user_id: 3) for Task 2
+    ('Please confirm the schedule for the project.', NOW(), 5, 4), -- Sent by Tony Stark (user_id: 4) for Task 5
+    ('The schedule is confirmed. We will start on Monday.', NOW(), 5, 4); -- Sent by Tony Stark (user_id: 4) for Task 5
+
+
+-- Populating the Command Table
+INSERT INTO projektor.command (id)
+VALUES
+    (1),
+    (2),
+    (3),
+    (4),
+    (5);
+
+-- Populating the Photo Table with Sample Data
+INSERT INTO projektor.photo (description, date_added, author, content, task_id, project_id, user_id)
+VALUES
+    ('Photo of completed plumbing work', NOW(), 1, 'binary_data_here', NULL, NULL, 2), -- Photo uploaded by Bulbasaur (user_id: 2)
+    ('Photo of painting progress', NOW(), 3, 'binary_data_here', 1, NULL, 3), -- Photo uploaded by Charmander (user_id: 3) for Task 1
+    ('Photo of roofing materials', NOW(), 5, 'binary_data_here', NULL, 3, 5), -- Photo uploaded by Jigglypuff (user_id: 5) for Project 3
+    ('Photo of landscaping design', NOW(), 2, 'binary_data_here', NULL, NULL, 1), -- Photo uploaded by Pikachu (user_id: 1)
+    ('Photo of electrical wiring', NOW(), 4, 'binary_data_here', 2, NULL, 4); -- Photo uploaded by Squirtle (user_id: 4) for Task 2
+
+-- Populating the Review Table with Sample Data
+INSERT INTO projektor.review (rating, comment, date_added, client, provider)
+VALUES
+    (4, 'Great work on the plumbing repairs!', '2024-05-02 12:00:00', 1, 2), -- Review by Pikachu (user_id: 1) for Brock (user_id: 2)
+    (5, 'Excellent service and craftsmanship!', '2024-05-07 10:30:00', 3, 3), -- Review by Ash (user_id: 3) for Misty (user_id: 3)
+    (3, 'Satisfactory job, but could be better.', '2024-05-10 14:45:00', 4, 4), -- Review by Squirtle (user_id: 4) for Peter Parker (user_id: 4)
+    (5, 'Highly recommended! Professional and efficient.', '2024-05-15 11:20:00', 5, 5), -- Review by Jigglypuff (user_id: 5) for Jigglypuff (user_id: 5)
+    (4, 'Good communication and quality work.', '2024-05-20 09:30:00', 2, 6); -- Review by Bulbasaur (user_id: 2) for Bruce Banner (user_id: 6)
 
 
 

@@ -12,6 +12,7 @@ import java.time.Instant;
 public class Quote {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Lob

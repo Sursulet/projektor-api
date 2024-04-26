@@ -7,17 +7,22 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "project")
 public class Project {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Lob
     @Column(name = "description")
     private String description;
+
+    @Column(name = "title", nullable = false)
+    private String title;
 
     @Column(name = "deadline", nullable = false)
     private LocalDate deadline;
@@ -36,10 +41,10 @@ public class Project {
     private User author;
 
     @Column(name = "start_date")
-    private Instant startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private Instant endDate;
+    private LocalDateTime endDate;
 
     public Integer getId() {
         return id;
@@ -55,6 +60,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDate getDeadline() {
@@ -89,20 +102,19 @@ public class Project {
         this.author = author;
     }
 
-    public Instant getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
-
 }
